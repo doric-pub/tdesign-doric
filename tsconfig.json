@@ -61,6 +61,8 @@
   },
   "include": [
     "**/*.ts",
+    "**/*.tsx",
+    "example/src/Example.tsx",
   ],
   "exclude": [
     "example/",

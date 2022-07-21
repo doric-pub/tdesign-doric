@@ -9,7 +9,7 @@ import pub.doric.DoricLibrary;
 import pub.doric.DoricRegistry;
 
 @DoricComponent
-public class tdesign-doricLibrary extends DoricLibrary {
+public class DoricTDesignLibrary extends DoricLibrary {
     @Override
     public void load(DoricRegistry registry) {
         try {

@@ -1,75 +1,16 @@
+import { loge } from "doric";
 import {
   Panel,
   Group,
   layoutConfig,
-  Color,
   navbar,
-  Text,
   jsx,
   Scroller,
   VLayout,
-  HLayout,
+  AssetsResource,
 } from "doric";
-export type Theme = "primary" | "danger" | "default";
-export type Variant = "outline" | "base";
-export function getButtonBgColor(props?: ButtonProps) {
-  if (props?.variant === "outline") {
-    return;
-  } else {
-    return getThemeColor(props?.theme);
-  }
-}
-export function getButtonTextColor(props?: ButtonProps) {
-  if (props?.variant === "outline") {
-    return getThemeColor(props?.theme);
-  } else if (props?.theme === "primary" || props?.theme === "danger") {
-    return Color.WHITE;
-  } else {
-    return;
-  }
-}
-export function getThemeColor(theme?: Theme, defaultColor?: Color) {
-  switch (theme) {
-    case "primary":
-      return Color.parse("#0052d9");
-    case "danger":
-      return Color.parse("#e34d59");
-    default:
-      return defaultColor;
-  }
-}
-export function getBorder(props?: ButtonProps) {
-  if (props?.variant === "outline") {
-    return {
-      color: getThemeColor(props?.theme) || Color.parse("#DCDCDC"),
-      width: 1,
-    };
-  }
-}
+import { Button } from "./widgets/Button";
 
-export type ButtonProps = {
-  theme?: Theme;
-  variant?: Variant;
-};
-
-export function Button(props?: Partial<Text> & ButtonProps) {
-  return (
-    <HLayout
-      backgroundColor={getButtonBgColor(props)}
-      border={getBorder(props)}
-      corners={4}
-      layoutConfig={props?.layoutConfig ?? layoutConfig().fit()}
-    >
-      <Text
-        textSize={16}
-        textColor={getButtonTextColor(props)}
-        padding={{ left: 40, right: 40, top: 15, bottom: 15 }}
-        text={props?.innerElement}
-        props={{ ...props, layoutConfig: layoutConfig().fit() }}
-      ></Text>
-    </HLayout>
-  );
-}
 @Entry
 export class ButtonExample extends Panel {
   onShow() {
@@ -85,6 +26,9 @@ export class ButtonExample extends Panel {
         <Button
           layoutConfig={layoutConfig().mostWidth().fitHeight()}
           theme="primary"
+          onClick={() => {
+            loge("Clicked");
+          }}
         >
           强按钮
         </Button>
@@ -114,7 +58,62 @@ export class ButtonExample extends Panel {
         >
           弱警告按钮
         </Button>
-        {null}
+        <Button
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          theme="primary"
+          icon={new AssetsResource("icon_app.png")}
+        >
+          带图标按钮
+        </Button>
+
+        <Button
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          theme="primary"
+          onClick={() => {
+            loge("Clicked");
+          }}
+          disabled={true}
+        >
+          强按钮
+        </Button>
+        <Button
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          theme="primary"
+          variant="outline"
+          disabled={true}
+        >
+          弱按钮
+        </Button>
+        <Button
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          variant="outline"
+          disabled={true}
+        >
+          次按钮
+        </Button>
+        <Button
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          theme="danger"
+          disabled={true}
+        >
+          强警告按钮
+        </Button>
+        <Button
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          theme="danger"
+          variant="outline"
+          disabled={true}
+        >
+          弱警告按钮
+        </Button>
+        <Button
+          layoutConfig={layoutConfig().mostWidth().fitHeight()}
+          theme="primary"
+          icon={new AssetsResource("icon_app.png")}
+          disabled={true}
+        >
+          带图标按钮
+        </Button>
       </VLayout>
     </Scroller>;
   }

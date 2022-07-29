@@ -7,7 +7,6 @@ import {
   Gravity,
   GestureContainer,
   Resource,
-  LayoutConfigImpl,
   Image,
   createRef,
 } from "doric";
@@ -105,13 +104,15 @@ export function Button(props?: Partial<Text> & ButtonProps) {
         padding={{ left: 40, right: 40, top: 15, bottom: 15 }}
         space={5}
       >
-        <Image
-          layoutConfig={layoutConfig().just()}
-          width={22}
-          height={22}
-          hidden={!!!props?.icon}
-          image={props?.icon}
-        />
+        {!!props?.icon ? (
+          <Image
+            layoutConfig={layoutConfig().just()}
+            width={22}
+            height={22}
+            image={props?.icon}
+          />
+        ) : null}
+
         <Text
           textSize={16}
           textColor={getButtonTextColor(props)}

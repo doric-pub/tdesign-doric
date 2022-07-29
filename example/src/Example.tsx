@@ -16,6 +16,7 @@ import {
   ClassType,
 } from "doric";
 import { ButtonExample } from "./ButtonExample";
+import { CellExample } from "./CellExample";
 function ExItem(
   props: { label: string; href: ClassType<Panel> } & Partial<Text>
 ) {
@@ -44,7 +45,7 @@ class Example extends Panel {
     <Scroller parent={root} layoutConfig={layoutConfig().most()}>
       <VLayout layoutConfig={layoutConfig().mostWidth().fitHeight()} space={10}>
         <ExItem label="Button" href={ButtonExample}></ExItem>
-        <ExItem label="其他" href={ButtonExample}></ExItem>
+        <ExItem label="Cell" href={CellExample}></ExItem>
       </VLayout>
     </Scroller>;
   }

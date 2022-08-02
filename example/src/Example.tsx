@@ -1,13 +1,10 @@
 import {
   Panel,
   Group,
-  vlayout,
   layoutConfig,
   Gravity,
-  text,
   Color,
   navbar,
-  modal,
   Text,
   jsx,
   Scroller,

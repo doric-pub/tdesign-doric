@@ -9,7 +9,7 @@ import {
   VLayout,
   AssetsResource,
 } from "doric";
-import { Button } from "./widgets/Button";
+import { Button } from "tdesign-doric";
 
 @Entry
 export class ButtonExample extends Panel {

@@ -1,4 +1,9 @@
-import { LayoutConfig, LayoutConfigImpl } from "doric";
+import {
+  createRef,
+  GestureContainer,
+  LayoutConfig,
+  LayoutConfigImpl,
+} from "doric";
 import {
   jsx,
   HLayout,
@@ -40,87 +45,109 @@ export function CellGroup(props: { innerElement: JSX.Element[] }) {
   );
 }
 export function Cell(props: Partial<View> & CellProps) {
+  const ref = createRef<GestureContainer>();
+
   return (
-    <HLayout
+    <GestureContainer
+      ref={ref}
       layoutConfig={
         props.layoutConfig ?? layoutConfig().mostWidth().fitHeight()
       }
-      padding={{ top: 10, bottom: 10, left: 15, right: 15 }}
-      onClick={props.onClick}
-      gravity={Gravity.CenterY}
+      onSingleTap={
+        props.onClick
+          ? () => {
+              props.onClick?.();
+            }
+          : undefined
+      }
+      onTouchDown={() => {
+        ref.current.backgroundColor = Color.BLACK.alpha(0.1);
+      }}
+      onTouchUp={() => {
+        ref.current.backgroundColor = Color.TRANSPARENT;
+      }}
+      onTouchCancel={() => {
+        ref.current.backgroundColor = Color.TRANSPARENT;
+      }}
     >
-      {props.image?.also((it) => {
-        if (it.layoutConfig instanceof LayoutConfigImpl) {
-          it.layoutConfig = it.layoutConfig
-            .configMargin({ right: 5 })
-            .toModel() as LayoutConfig;
-        } else {
-          it.layoutConfig = { ...it.layoutConfig, margin: { right: 5 } };
-        }
-      })}
-      {props.leftIcon ? (
-        <Image
-          image={props.leftIcon}
-          layoutConfig={layoutConfig()
-            .just()
-            .configMargin({ right: 5 })
-            .configAlignment(Gravity.Top)}
-          width={22}
-          height={22}
-        />
-      ) : null}
-      <VLayout
-        space={4}
-        layoutConfig={layoutConfig().justWidth().fitHeight().configWeight(1)}
+      <HLayout
+        layoutConfig={layoutConfig().mostWidth().fitHeight()}
+        padding={{ top: 10, bottom: 10, left: 15, right: 15 }}
+        gravity={Gravity.CenterY}
       >
-        <HLayout gravity={Gravity.CenterY}>
-          <Text
-            text={props.title}
-            maxLines={0}
-            textSize={16}
-            layoutConfig={layoutConfig().fit().configMinHeight(22)}
-            textColor={Color.parse("#e6000000")}
-            textAlignment={Gravity.Left}
+        {props.image?.also((it) => {
+          if (it.layoutConfig instanceof LayoutConfigImpl) {
+            it.layoutConfig = it.layoutConfig
+              .configMargin({ right: 5 })
+              .toModel() as LayoutConfig;
+          } else {
+            it.layoutConfig = { ...it.layoutConfig, margin: { right: 5 } };
+          }
+        })}
+        {props.leftIcon ? (
+          <Image
+            image={props.leftIcon}
+            layoutConfig={layoutConfig()
+              .just()
+              .configMargin({ right: 5 })
+              .configAlignment(Gravity.Top)}
+            width={22}
+            height={22}
           />
-          {props.required === true ? (
-            <Text
-              layoutConfig={layoutConfig().fit().configMargin({ left: 5 })}
-              textSize={12}
-              textColor={Color.RED}
-            >
-              *
-            </Text>
-          ) : null}
-        </HLayout>
-        {!!props.description ? (
-          <Text
-            text={props.description}
-            textSize={14}
-            maxLines={0}
-            textAlignment={Gravity.Left}
-            textColor={Color.BLACK.alpha(6 / 16)}
-          ></Text>
         ) : null}
-      </VLayout>
-      {!!props.note ? (
-        typeof props.note === "string" ? (
-          <Text
-            text={props.note}
-            textColor={Color.BLACK.alpha(6 / 16)}
-            textSize={16}
+        <VLayout
+          space={4}
+          layoutConfig={layoutConfig().justWidth().fitHeight().configWeight(1)}
+        >
+          <HLayout gravity={Gravity.CenterY}>
+            <Text
+              text={props.title}
+              maxLines={0}
+              textSize={16}
+              layoutConfig={layoutConfig().fit().configMinHeight(22)}
+              textColor={Color.parse("#e6000000")}
+              textAlignment={Gravity.Left}
+            />
+            {props.required === true ? (
+              <Text
+                layoutConfig={layoutConfig().fit().configMargin({ left: 5 })}
+                textSize={12}
+                textColor={Color.RED}
+              >
+                *
+              </Text>
+            ) : null}
+          </HLayout>
+          {!!props.description ? (
+            <Text
+              text={props.description}
+              textSize={14}
+              maxLines={0}
+              textAlignment={Gravity.Left}
+              textColor={Color.BLACK.alpha(6 / 16)}
+            ></Text>
+          ) : null}
+        </VLayout>
+        {!!props.note ? (
+          typeof props.note === "string" ? (
+            <Text
+              text={props.note}
+              textColor={Color.BLACK.alpha(6 / 16)}
+              textSize={16}
+            />
+          ) : (
+            props.note
+          )
+        ) : null}
+        {props.arrow ? (
+          <Image
+            layoutConfig={layoutConfig().just().configMargin({ left: 10 })}
+            width={24}
+            height={24}
+            imageBase64={arrowImg}
           />
-        ) : (
-          props.note
-        )
-      ) : null}
-      {props.arrow ? (
-        <Image
-          layoutConfig={layoutConfig().just().configMargin({ left: 10 })}
-          width={24}
-          height={24}
-          imageBase64={arrowImg}
-        />
-      ) : null}
-    </HLayout>
+        ) : null}
+      </HLayout>
+    </GestureContainer>
   );
 }

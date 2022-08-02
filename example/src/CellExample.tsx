@@ -1,4 +1,4 @@
-import { AssetsResource, loge, Switch } from "doric";
+import { AssetsResource, Switch } from "doric";
 import {
   Panel,
   Group,
@@ -7,19 +7,28 @@ import {
   jsx,
   Scroller,
   Image,
+  modal,
 } from "doric";
-import { Badge } from "./widgets/Badge";
-import { Cell, CellGroup } from "./widgets/Cell";
+import { Badge, Cell, CellGroup } from "tdesign-doric";
+import { openDConsole } from "doric-console";
 
 @Entry
 export class CellExample extends Panel {
+  onCreate() {
+    openDConsole(this.context);
+  }
   onShow() {
     navbar(this.context).setTitle("Cell");
   }
   build(root: Group) {
     <Scroller parent={root} layoutConfig={layoutConfig().most()}>
       <CellGroup>
-        <Cell title="单行标题" />
+        <Cell
+          title="单行标题"
+          onClick={() => {
+            modal(this.context).alert("点击了单行标题");
+          }}
+        />
         <Cell title="单行标题" required={true} />
         <Cell title="单行标题" note="辅助信息" />
         <Cell title="单行标题" arrow={true} />
